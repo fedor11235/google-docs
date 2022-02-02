@@ -1,16 +1,16 @@
 import './../assets/Form.css';
 import React from 'react';
 // import "dotenv/config";
-import { Pool } from 'pg'
+// import { Pool } from 'pg'
 
 
-new Pool({
-    user: 'postgres',
-    password: '57Felasi',
-    host: 'localhost',
-    port: 5432,
-    database:'users',
-  })
+// new Pool({
+//     user: 'postgres',
+//     password: '57Felasi',
+//     host: 'localhost',
+//     port: 5432,
+//     database:'users',
+//   })
 //   pool.query('SELECT NOW()', (err, res) => {
 //     console.log(err, res)
 //     pool.end()
