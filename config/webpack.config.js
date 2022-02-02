@@ -291,6 +291,24 @@ module.exports = function (webpackEnv) {
       ],
     },
     resolve: {
+
+      fallback: {
+        crypto: false, //!
+        os: false, //!
+        path: false, //!
+        stream: false, //!
+        sys: false, //!
+        url: false, //!
+        util: false, //!
+
+        process: false,
+        'pg-native': false,
+
+        tls: false,
+        fs: false,
+        dns: false,
+        net: false,
+    },
       // This allows you to set a fallback for where webpack should look for modules.
       // We placed these paths second because we want `node_modules` to "win"
       // if there are any conflicts. This matches Node resolution mechanism.

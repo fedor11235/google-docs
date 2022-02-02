@@ -1,22 +1,7 @@
 import '../assets/Form.css';
 import React from 'react';
 
-import addPerson from '../db';
-// import "dotenv/config";
-// import { Pool } from 'pg'
-
-
-// new Pool({
-//     user: 'postgres',
-//     password: '57Felasi',
-//     host: 'localhost',
-//     port: 5432,
-//     database:'users',
-//   })
-//   pool.query('SELECT NOW()', (err, res) => {
-//     console.log(err, res)
-//     pool.end()
-//   })
+import {addPerson} from '../db';
 
 class RegistrPage extends React.Component{
     constructor(props) {
@@ -39,10 +24,10 @@ class RegistrPage extends React.Component{
         });
       }
 
-    // createUser() {
-    //     const newPerson = db.query('INSERT INTO person (login, password) value ($1, $2) RETURNING *', [this.login, this.password]) 
-    //     alert(newPerson)
-    // }
+    createUser() {
+        const newPerson = addPerson({login: this.login, password: this.password})
+        alert(newPerson)
+    }
 
     
     render(){
