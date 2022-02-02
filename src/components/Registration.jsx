@@ -1,5 +1,7 @@
-import './../assets/Form.css';
+import '../assets/Form.css';
 import React from 'react';
+
+import addPerson from '../db';
 // import "dotenv/config";
 // import { Pool } from 'pg'
 
