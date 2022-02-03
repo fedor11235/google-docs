@@ -1,8 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-// import Home from "../../pages/Home";
-// import Login from "../../pages/Login";
-// import Registration from "../../pages/Registration";
-// import Profile from "../../components/Profile";
 import NotFound from "../components/NotFoundPage";
 import Login from "../components/Login";
 import Main from "../components/Main";

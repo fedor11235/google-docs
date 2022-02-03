@@ -1,20 +1,6 @@
 import './../assets/Form.css';
 import React from 'react';
-// import "dotenv/config";
-// import { Pool } from 'pg'
-
-
-// new Pool({
-//     user: 'postgres',
-//     password: '57Felasi',
-//     host: 'localhost',
-//     port: 5432,
-//     database:'users',
-//   })
-//   pool.query('SELECT NOW()', (err, res) => {
-//     console.log(err, res)
-//     pool.end()
-//   })
+import api from "../api";
 
 class RegistrPage extends React.Component{
     constructor(props) {
@@ -23,6 +9,7 @@ class RegistrPage extends React.Component{
 
         this.updateLoginValue = this.updateLoginValue.bind(this);
         this.updatePasswordValue = this.updatePasswordValue.bind(this);
+        this.createUser = this.createUser.bind(this);
       }
 
     updateLoginValue(evt) {
@@ -37,17 +24,19 @@ class RegistrPage extends React.Component{
         });
       }
 
-    // createUser() {
-    //     const newPerson = db.query('INSERT INTO person (login, password) value ($1, $2) RETURNING *', [this.login, this.password]) 
-    //     alert(newPerson)
-    // }
+    async createUser(event) {
+        event.preventDefault()
+        const data = {login: this.state.login, password:this.state.password}
+        await api.auth.registration(data)
+        console.log(data)
+    }
 
     
     render(){
     return (
         <div>
             <h1>Register</h1>
-            <form>
+            <form onSubmit={this.createUser}>
                 <label htmlFor="login">Come up with a login</label>
                 <input type="text" id="login" placeholder='Login' value={this.state.login} onChange={this.updateLoginValue}/>
 
