@@ -1,7 +1,8 @@
 import '../assets/Form.css';
 import React from 'react';
 
-import {addPerson} from '../db';
+// import 'quill/dist/quill.show.css';
+// import {addPerson} from '../db';
 
 class RegistrPage extends React.Component{
     constructor(props) {
@@ -24,9 +25,11 @@ class RegistrPage extends React.Component{
         });
       }
 
-    createUser() {
-        const newPerson = addPerson({login: this.login, password: this.password})
-        alert(newPerson)
+    createUser(event) {
+        // const newPerson = addPerson({login: this.login, password: this.password})
+        // alert(newPerson)
+        event.preventDefault();
+        console.log('submit')
     }
 
     
@@ -34,7 +37,7 @@ class RegistrPage extends React.Component{
     return (
         <div>
             <h1>Register</h1>
-            <form>
+            <form onSubmit={this.createUser}>
                 <label htmlFor="login">Come up with a login</label>
                 <input type="text" id="login" placeholder='Login' value={this.state.login} onChange={this.updateLoginValue}/>
 

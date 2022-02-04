@@ -300,12 +300,13 @@ module.exports = function (webpackEnv) {
         sys: false, //!
         url: false, //!
         util: false, //!
+        constants: false,
 
         process: false,
         'pg-native': false,
 
         tls: false,
-        fs: false,
+          fs: false,
         dns: false,
         net: false,
     },
