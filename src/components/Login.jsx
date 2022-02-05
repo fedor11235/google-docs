@@ -1,15 +1,52 @@
-import './../assets/Form.css';
+import '../assets/Form.css';
+// import api from '../api';
+import React from 'react';
+import { useState } from "react";
+import { useDispatch, useSelector } from 'react-redux'
+import { actionAuth } from '../store/auth';
+
 
 const LoginPage = () => {
+
+    const [login, setLogin] = useState('')
+    const [password, setPassword] = useState('')
+
+    const dispatch = useDispatch()
+    const auth = useSelector(state => state.auth)
+
+    async function logInUser(evt) {
+        evt.preventDefault();
+
+        const obgReq = {login: login, password: password}
+        const response = await fetch('http://localhost:5000/api/add-person', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(obgReq)
+          })
+
+        const parsed = await response.json()
+        console.log(auth)
+
+        if (parsed.register) {
+
+            dispatch(actionAuth())
+            console.log(auth)
+            alert('registration successfully', auth)
+        }
+        else alert('The login you entered already exists', auth)
+    }
+
     return (
         <div>
-            <h1>log in</h1>
-            <form>
-                <label htmlFor="login"></label>
-                <input type="text" id="login" />
+            <h1>Log in</h1>
+            <form onSubmit={logInUser}>
+                <label htmlFor="login">Come up with a login</label>
+                <input type="text" id="login" placeholder='Login' value={login} onChange={evnt => setLogin(evnt.target.value)}/>
 
-                <label htmlFor="password"></label>
-                <input type="password" id="password" />
+                <label htmlFor="password">Come up with a password</label>
+                <input type="password" id="password" placeholder='Password' value={password} onChange={evnt => setPassword(evnt.target.value)}/>
 
                 <input type="submit" />
             </form>
@@ -17,4 +54,4 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage;
+export default LoginPage

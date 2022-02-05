@@ -1,9 +1,9 @@
-// import auth from "./endpoints/auth";
-// import posts from "./endpoints/posts";
+import auth from "./endpoints/auth";
+import posts from "./endpoints/posts";
 
-// const api = {
-//   auth,
-//   posts,
-// };
+const allApi = {
+  auth,
+  posts,
+};
 
-// export default api;
+export default allApi;

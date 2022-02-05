@@ -1,18 +1,12 @@
-// import axios from "axios";
+import axios from "axios";
 
-// const proxyConf = {
-//     host: 'https://cors-anywhere.herokuapp.com/',
-//     port: 8000,
-//    }
+// const headers = {
+//   'Content-Type': 'text/plain'
+// };
 
+const axiosInstance = axios.create({
+  baseURL: 'localhost:5000/api',
+  withCredentials: false,
+});
 
-// const axiosInstance = axios.create({
-//   baseURL: 'localhost:5000/api',
-//   proxy: proxyConf
-//   // headers: {
-//   //   'Access-Control-Allow-Origin': '*',
-//   //   'Content-Type': 'application/json',
-//   // },
-// });
-
-// export default axiosInstance;
+export default axiosInstance;

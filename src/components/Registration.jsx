@@ -1,54 +1,57 @@
 import '../assets/Form.css';
+// import api from '../api';
 import React from 'react';
+import { useState } from "react";
+import { useDispatch, useSelector } from 'react-redux'
+import { actionAuth } from '../store/auth';
 
-// import 'quill/dist/quill.show.css';
-// import {addPerson} from '../db';
 
-class RegistrPage extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {login: 'pop', password: ''};
+const RegistrPage = () => {
 
-        this.updateLoginValue = this.updateLoginValue.bind(this);
-        this.updatePasswordValue = this.updatePasswordValue.bind(this);
-      }
+    const [login, setLogin] = useState('')
+    const [password, setPassword] = useState('')
 
-    updateLoginValue(evt) {
-        this.setState({
-            login: evt.target.value
-        });
-      }
+    const dispatch = useDispatch()
+    const auth = useSelector(state => state.auth)
 
-    updatePasswordValue(evt) {
-        this.setState({
-            password: evt.target.value
-        });
-      }
+    async function createUser(evt) {
+        evt.preventDefault();
 
-    createUser(event) {
-        // const newPerson = addPerson({login: this.login, password: this.password})
-        // alert(newPerson)
-        event.preventDefault();
-        console.log('submit')
+        const obgReq = {login: login, password: password}
+        const response = await fetch('http://localhost:5000/api/add-person', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(obgReq)
+          })
+
+        const parsed = await response.json()
+        console.log(auth)
+
+        if (parsed.register) {
+
+            dispatch(actionAuth())
+            console.log(auth)
+            alert('registration successfully', auth)
+        }
+        else alert('The login you entered already exists', auth)
     }
 
-    
-    render(){
     return (
         <div>
             <h1>Register</h1>
-            <form onSubmit={this.createUser}>
+            <form onSubmit={createUser}>
                 <label htmlFor="login">Come up with a login</label>
-                <input type="text" id="login" placeholder='Login' value={this.state.login} onChange={this.updateLoginValue}/>
+                <input type="text" id="login" placeholder='Login' value={login} onChange={evnt => setLogin(evnt.target.value)}/>
 
                 <label htmlFor="password">Come up with a password</label>
-                <input type="password" id="password" placeholder='Password' value={this.state.password} onChange={this.updatePasswordValue}/>
+                <input type="password" id="password" placeholder='Password' value={password} onChange={evnt => setPassword(evnt.target.value)}/>
 
                 <input type="submit" />
             </form>
         </div>
     )
-    }
 }
 
-export default RegistrPage;
+export default RegistrPage

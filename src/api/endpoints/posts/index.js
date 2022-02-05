@@ -1,7 +1,7 @@
-// import axios from "../../axios";
+import axios from "../../axios";
 
-// const endpoints = {
-//   registration: (data) => axios.post("/add-post", data),
-// };
+const endpoints = {
+  registration: (data) => axios.post("/add-post", data),
+};
 
-// export default endpoints;
+export default endpoints;
