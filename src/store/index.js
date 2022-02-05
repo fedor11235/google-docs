@@ -23,7 +23,7 @@ const oldState = loadState();
 const store = createStore(authReduser, oldState)
 
 store.subscribe(() => {
-    saveState(store.getState());
-});
+    saveState(store.getState())
+})
 
 export default store

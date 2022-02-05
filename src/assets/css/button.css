@@ -1,0 +1,30 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+button {
+    width: 300px;
+    height: 40px;
+    background: #50b2ce;
+    color: #fff;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding-left: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    border: 0;
+}
+
+button::placeholder {
+    opacity: 0.3;
+}
+
+button:hover {
+    background: #54bbd8;
+}
+
+button:active {
+    background: #5ccdec;
+}

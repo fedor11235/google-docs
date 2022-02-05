@@ -1,5 +1,5 @@
-import { useEffect, useState  } from "react";
-import '../assets/Textarea.css';
+import { useEffect, useState  } from "react"
+import '../assets/css/Textarea.css'
 
 // import { useState  } from "react"
 const INTERVAL_MS = 2000

@@ -1,9 +1,10 @@
 import { Routes, Route } from 'react-router-dom'
 
-import NotFound from '../components/NotFoundPage'
-import Login from '../components/Login'
-import Main from '../components/Main'
-import Register from '../components/Registration'
+import MainPage from '../page/MainPage'
+import NotFoundPage from '../page/NotFoundPage'
+import LoginPage from '../page/LoginPage'
+import FormPage from '../page/FormPage'
+import RegistrPage from '../page/RegistrPage'
 
 import PrivatePage from '../hoc/PrivatePage'
 
@@ -11,14 +12,14 @@ import PrivatePage from '../hoc/PrivatePage'
 function AppRoutes(){
     return (
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />}/>
-        <Route path="/register" element={<Register />}/>
-        <Route path="*" element={<NotFound />} />
+        <Route path="/" element={<MainPage />} />
+        <Route path="/login" element={<LoginPage />}/>
+        <Route path="/register" element={<RegistrPage />}/>
+        <Route path="*" element={<NotFoundPage />} />
 
         <Route path="/main" element={
           <PrivatePage>
-            <Main />
+            <FormPage />
           </PrivatePage>
         }/>
       </Routes>
@@ -26,4 +27,4 @@ function AppRoutes(){
 }
 
   
-export default AppRoutes;
+export default AppRoutes

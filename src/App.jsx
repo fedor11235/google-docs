@@ -1,7 +1,7 @@
-import logo from './assets/logo.svg';
-import './assets/App.css';
+import logo from './assets/img/logo.svg'
+import './assets/css/App.css'
 
-import Routes from "./routes/Routes";
+import Routes from "./routes/Routes"
 
 function App() {
   return (
@@ -14,4 +14,4 @@ function App() {
   );
 }
 
-export default App;
+export default App
