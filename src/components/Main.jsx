@@ -18,7 +18,6 @@ const MainPage = () => {
 
     let [socket, setSocket] = useState()
 
-
     useEffect(() => {
         const s = io("http://localhost:3001")
         setSocket(s)
@@ -34,7 +33,6 @@ const MainPage = () => {
    
                 <div className="textarea">
                     <Text documentId = {0} socket={socket} color={randColor()}/>
-                    <Text documentId = {1} socket={socket} color={randColor()}/>
                 </div>
                 
                 <input type="submit" />

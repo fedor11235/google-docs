@@ -1,9 +1,10 @@
-import '../assets/Form.css';
-// import api from '../api';
-import React from 'react';
+import '../assets/Form.css'
+import { useLocation, useNavigate} from 'react-router-dom'
+// import api from '../api'
+import React from 'react'
 import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
-import { actionAuth } from '../store/auth';
+import { actionAuth } from '../store/auth'
 
 
 const LoginPage = () => {
@@ -12,13 +13,16 @@ const LoginPage = () => {
     const [password, setPassword] = useState('')
 
     const dispatch = useDispatch()
-    const auth = useSelector(state => state.auth)
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    const fromPage = location.state?.from?.pathname || '/main'
 
     async function logInUser(evt) {
         evt.preventDefault();
 
         const obgReq = {login: login, password: password}
-        const response = await fetch('http://localhost:5000/api/add-person', {
+        const response = await fetch('http://localhost:5000/api/login-person', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
@@ -27,15 +31,16 @@ const LoginPage = () => {
           })
 
         const parsed = await response.json()
-        console.log(auth)
+        // console.log(parsed)
 
-        if (parsed.register) {
+        if (parsed.successfully) {
 
+            alert('Loging successfully')
             dispatch(actionAuth())
-            console.log(auth)
-            alert('registration successfully', auth)
+            console.log(fromPage)
+            navigate(fromPage, {replace: true})
         }
-        else alert('The login you entered already exists', auth)
+        else alert('Incorrect login or password')
     }
 
     return (
