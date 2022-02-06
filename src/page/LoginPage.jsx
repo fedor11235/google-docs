@@ -4,8 +4,7 @@ import React from 'react'
 import { useState } from "react";
 import { useDispatch } from 'react-redux'
 import { actionAuth } from '../store/auth'
-
-// import api from '../api'
+import api from '../api'
 
 const LoginPage = () => {
 
@@ -16,20 +15,12 @@ const LoginPage = () => {
     const navigate = useNavigate()
 
     async function logInUser(evt) {
-        evt.preventDefault();
+        evt.preventDefault()
 
         const obgReq = {login: login, password: password}
-        const response = await fetch('http://localhost:5000/api/login-person', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(obgReq)
-          })
+        const response = await api.auth.login(obgReq)
 
-        const parsed = await response.json()
-
-        if (parsed.successfully) {
+        if (response.data.successfully) {
             alert('Loging successfully')
             dispatch(actionAuth())
             navigate('/form')

@@ -7,6 +7,7 @@ import Text from '../components/Text'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { actionLogout } from '../store/auth'
+import api from '../api'
 
 
 // import Quill from 'quill';
@@ -35,6 +36,20 @@ const MainPage = () => {
         navigate('/form') 
     }
 
+    async function createPosts(evt) {
+        evt.preventDefault();
+
+        // const obgReq = {login: login, password: password}
+        // const response = await api.posts.createPosts(obgReq)
+
+        // if (response.data.successfully) {
+        //     alert('registration successfully')
+        //     dispatch(actionAuth())
+        //     navigate('/form')
+        // }
+        // else alert('The login you entered already exists')
+    }
+
     useEffect(() => {
         const s = io("http://localhost:3001")
         setSocket(s)
@@ -45,7 +60,7 @@ const MainPage = () => {
     
     return (
         <div>
-            <form>
+            <form onSubmit={createPosts}>
    
                 <div className="textarea">
                     <Text documentId = {0} socket={socket} color={randColor()}/>

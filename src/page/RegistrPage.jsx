@@ -4,9 +4,7 @@ import { useState } from "react"
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { actionAuth } from '../store/auth'
-
-// import api from '../api';
-
+import api from '../api'
 
 const RegistrPage = () => {
 
@@ -20,17 +18,9 @@ const RegistrPage = () => {
         evt.preventDefault();
 
         const obgReq = {login: login, password: password}
-        const response = await fetch('http://localhost:5000/api/add-person', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(obgReq)
-          })
+        const response = await api.auth.register(obgReq)
 
-        const parsed = await response.json()
-
-        if (parsed.register) {
+        if (response.data.successfully) {
             alert('registration successfully')
             dispatch(actionAuth())
             navigate('/form')
