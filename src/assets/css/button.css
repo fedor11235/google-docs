@@ -9,12 +9,12 @@ button {
     height: 40px;
     background: #50b2ce;
     color: #fff;
-    margin-bottom: 10px;
     border-radius: 5px;
     padding-left: 15px;
     font-size: 20px;
     font-weight: bold;
     border: 0;
+    cursor: pointer;
 }
 
 button::placeholder {
@@ -27,4 +27,8 @@ button:hover {
 
 button:active {
     background: #5ccdec;
+}
+
+.link{
+    margin-bottom: 10px;
 }

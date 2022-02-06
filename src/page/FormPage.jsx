@@ -1,8 +1,13 @@
 import '../assets/css/button.css'
+import '../assets/css/Textarea.css'
+
 import { useEffect, useState  } from "react"
 import {io} from 'socket.io-client'
 import Text from '../components/Text'
-import '../assets/css/Textarea.css'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { actionLogout } from '../store/auth'
+
 
 // import Quill from 'quill';
 // import { useCallback, useEffect, useState } from "react"
@@ -18,7 +23,17 @@ function randColor() {
 
 const MainPage = () => {
 
-    let [socket, setSocket] = useState()
+    const [socket, setSocket] = useState()
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    function logOut(evt) {
+        evt.preventDefault()
+        alert('logged out')
+        dispatch(actionLogout())
+        navigate('/form') 
+    }
 
     useEffect(() => {
         const s = io("http://localhost:3001")
@@ -27,7 +42,6 @@ const MainPage = () => {
             s.disconnect()
         }
       }, [])
-
     
     return (
         <div>
@@ -37,9 +51,9 @@ const MainPage = () => {
                     <Text documentId = {0} socket={socket} color={randColor()}/>
                 </div>
                 
-                <input type="submit"  value='Send' />
+                <input type="submit"  value="Send" />
             </form>
-            <button>Log out</button>
+            <button onClick={logOut}>Log out</button>
         </div>
     )
 }

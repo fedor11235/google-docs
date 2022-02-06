@@ -1,7 +1,8 @@
 import '../assets/css/form.css'
 import React from 'react'
 import { useState } from "react"
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { actionAuth } from '../store/auth'
 
 // import api from '../api';
@@ -13,7 +14,7 @@ const RegistrPage = () => {
     const [password, setPassword] = useState('')
 
     const dispatch = useDispatch()
-    const auth = useSelector(state => state.auth)
+    const navigate = useNavigate()
 
     async function createUser(evt) {
         evt.preventDefault();
@@ -28,15 +29,13 @@ const RegistrPage = () => {
           })
 
         const parsed = await response.json()
-        console.log(auth)
 
         if (parsed.register) {
-
+            alert('registration successfully')
             dispatch(actionAuth())
-            console.log(auth)
-            alert('registration successfully', auth)
+            navigate('/form')
         }
-        else alert('The login you entered already exists', auth)
+        else alert('The login you entered already exists')
     }
 
     return (
@@ -47,9 +46,9 @@ const RegistrPage = () => {
                 <input type="text" id="login" placeholder='Login' value={login} onChange={evnt => setLogin(evnt.target.value)}/>
 
                 <label htmlFor="password">Come up with a password</label>
-                <input type="password" id="password" placeholder='Password' value={password} onChange={evnt => setPassword(evnt.target.value)}/>
+                <input type="password" id="password" placeholder="Password" value={password} onChange={evnt => setPassword(evnt.target.value)}/>
 
-                <input type="submit" value='Register' />
+                <input type="submit" value="Register" />
             </form>
         </div>
     )

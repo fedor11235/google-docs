@@ -1,13 +1,17 @@
 import '../assets/css/button.css'
 import React from 'react'
-import { useLocation, useNavigate} from 'react-router-dom'
+import { Link } from "react-router-dom"
 
 const MainPage = () => {
 
     return (
-        <div class='main'>
-            <button>Log in</button>
-            <button>Registration</button>
+        <div className="main">
+            <Link className="link" to="/login">
+                <button>Log in</button>
+            </Link>
+            <Link className="link" to="/register">
+                <button>Registration</button>
+            </Link>
         </div>
     )
 }

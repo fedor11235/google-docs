@@ -1,17 +1,17 @@
-import { useLocation, Navigate} from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const PrivatePage = (props) => {
 
-    const location = useLocation()
     const auth = useSelector(state => state.auth)
+    console.log(auth,'!!!!!!!!!!!!!!!!')
 
-    if(!auth) {
-        return <Navigate to='/login' state={{from: location}} />
+    if(auth) {
+        console.log(auth,'ssssssssssssss!')
+        return <Navigate to='/form' />
     }
 
     return props.children
-
 }
 
 export default PrivatePage

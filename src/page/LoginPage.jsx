@@ -1,8 +1,8 @@
 import '../assets/css/form.css'
-import { useLocation, useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import React from 'react'
 import { useState } from "react";
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { actionAuth } from '../store/auth'
 
 // import api from '../api'
@@ -13,10 +13,7 @@ const LoginPage = () => {
     const [password, setPassword] = useState('')
 
     const dispatch = useDispatch()
-    const location = useLocation()
     const navigate = useNavigate()
-
-    const fromPage = location.state?.from?.pathname || '/main'
 
     async function logInUser(evt) {
         evt.preventDefault();
@@ -31,14 +28,11 @@ const LoginPage = () => {
           })
 
         const parsed = await response.json()
-        // console.log(parsed)
 
         if (parsed.successfully) {
-
             alert('Loging successfully')
             dispatch(actionAuth())
-            console.log(fromPage)
-            navigate(fromPage, {replace: true})
+            navigate('/form')
         }
         else alert('Incorrect login or password')
     }
@@ -51,9 +45,9 @@ const LoginPage = () => {
                 <input type="text" id="login" placeholder='Login' value={login} onChange={evnt => setLogin(evnt.target.value)}/>
 
                 <label htmlFor="password">Come up with a password</label>
-                <input type="password" id="password" placeholder='Password' value={password} onChange={evnt => setPassword(evnt.target.value)}/>
+                <input type="password" id="password" placeholder="Password" value={password} onChange={evnt => setPassword(evnt.target.value)}/>
 
-                <input type="submit" value='Log in' />
+                <input type="submit" value="Log in" />
             </form>
         </div>
     )
