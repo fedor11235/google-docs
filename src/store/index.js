@@ -19,7 +19,7 @@ const loadState = () => {
     }
 }
 
-const oldState = loadState();
+const oldState = loadState()
 const store = createStore(authReduser, oldState)
 
 store.subscribe(() => {

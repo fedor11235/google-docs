@@ -13,15 +13,6 @@ import api from '../api'
 // import Quill from 'quill';
 // import { useCallback, useEffect, useState } from "react"
 
-function randColor() {
-    const
-        r = Math.floor(Math.random() * (256)),
-        g = Math.floor(Math.random() * (256)),
-        b = Math.floor(Math.random() * (256))
-    const color = '#' + r.toString(16) + g.toString(16) + b.toString(16);
-    return color 
-}
-
 const MainPage = () => {
 
     const [socket, setSocket] = useState()
@@ -36,20 +27,6 @@ const MainPage = () => {
         navigate('/form') 
     }
 
-    async function createPosts(evt) {
-        evt.preventDefault();
-
-        // const obgReq = {login: login, password: password}
-        // const response = await api.posts.createPosts(obgReq)
-
-        // if (response.data.successfully) {
-        //     alert('registration successfully')
-        //     dispatch(actionAuth())
-        //     navigate('/form')
-        // }
-        // else alert('The login you entered already exists')
-    }
-
     useEffect(() => {
         const s = io("http://localhost:3001")
         setSocket(s)
@@ -60,12 +37,9 @@ const MainPage = () => {
     
     return (
         <div>
-            <form onSubmit={createPosts}>
-   
-                <div className="textarea">
-                    <Text documentId = {0} socket={socket} color={randColor()}/>
-                </div>
-                
+            <form>
+                <Text socket={socket} />
+ 
                 <input type="submit"  value="Send" />
             </form>
             <button onClick={logOut}>Log out</button>
@@ -74,3 +48,31 @@ const MainPage = () => {
 }
 
 export default MainPage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // async function createPosts(evt) {
+    //     evt.preventDefault();
+
+    //     // const obgReq = {login: login, password: password}
+    //     // const response = await api.posts.createPosts(obgReq)
+
+    //     // if (response.data.successfully) {
+    //     //     alert('registration successfully')
+    //     //     dispatch(actionAuth())
+    //     //     navigate('/form')
+    //     // }
+    //     // else alert('The login you entered already exists')
+    // }

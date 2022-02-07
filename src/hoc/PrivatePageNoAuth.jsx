@@ -4,10 +4,8 @@ import { useSelector } from 'react-redux'
 const PrivatePage = (props) => {
 
     const auth = useSelector(state => state.auth)
-    console.log(auth,'!!!!!!!!!!!!!!!!')
 
     if(auth) {
-        console.log(auth,'ssssssssssssss!')
         return <Navigate to='/form' />
     }
 
