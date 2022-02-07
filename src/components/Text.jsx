@@ -1,5 +1,8 @@
 import { useEffect, useState  } from "react"
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { actionLogout } from '../store/auth'
 import '../assets/css/Textarea.css'
 import api from '../api'
 
@@ -17,12 +20,11 @@ const INTERVAL_MS = 2000
 
 const MainPage = (props) => {
     let [text, setText] = useState('')
-    let [anotherText, setAnotherText] = useState()
     let [otherId, setOtherId] = useState()
 
-    let otherIds = []
 
-    // const otherId = [{id: 1, color: randColor()}, {id: 2, color: randColor()}, {id: 3, color: randColor()}]
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const idPerson = useSelector(state => state.id)
     const loginPerson = useSelector(state => state.login)
 
@@ -32,7 +34,7 @@ const MainPage = (props) => {
         if (props.socket === null || text === '') return
 
     
-        props.socket.once("load-document", otherIdRes => {
+        props.socket.once('load-document', otherIdRes => {
             otherIdRes.forEach(elemRes => {
                 otherId?.map(elemMy => {
                     if(elemMy.id === elemRes.id)
@@ -47,14 +49,14 @@ const MainPage = (props) => {
             setOtherId(otherIdRes)
         })
 
-        props.socket.emit("get-document", idPerson)
+        props.socket.emit('get-document', idPerson)
         }, [props.socket, text])
 
     // сохранение документа
     useEffect(() => {
         if (props.socket === null || text === '') return 
         const interval = setInterval(() => {
-            props.socket.emit("save-document", text)
+            props.socket.emit('save-document', text)
         }, INTERVAL_MS)
         return () => {
             clearInterval(interval)
@@ -62,16 +64,8 @@ const MainPage = (props) => {
     
       }, [props.socket, text])
 
-      useEffect(()=> {
-            console.log('!!!!!!!!!!')
-            console.log(otherId)
-            otherIds = otherId?.map(elem => <div className="other-id" style = { {background: elem.color} } ></div>)
-        },[text, otherId]
-      )
-
     async function submitPost (evt) {
         evt.preventDefault()
-        console.log(loginPerson)
 
         const obgReq = {login: loginPerson, content: text}
         const response = await api.posts.createPosts(obgReq)
@@ -82,7 +76,14 @@ const MainPage = (props) => {
         else alert('The shipment was unsuccessful')
     }
 
-    
+    function logOut(evt) {
+        evt.preventDefault()
+        alert('logged out')
+        dispatch(actionLogout())
+        navigate('/form') 
+        props.socket.emit('delete-document', idPerson)
+    }
+
     return (
         <div>
             <div className="others">
@@ -95,6 +96,7 @@ const MainPage = (props) => {
                     onInput={evnt => setText(evnt.target.value)}
                 />
                 <input type="submit"  value="Send" />
+                <button onClick={logOut}>Log out</button>
             </form>           
         </div>
 

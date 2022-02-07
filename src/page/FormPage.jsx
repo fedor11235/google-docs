@@ -4,23 +4,11 @@ import '../assets/css/Textarea.css'
 import { useEffect, useState  } from "react"
 import {io} from 'socket.io-client'
 import Text from '../components/Text'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { actionLogout } from '../store/auth'
+
 
 const MainPage = () => {
 
     const [socket, setSocket] = useState()
-
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-
-    function logOut(evt) {
-        evt.preventDefault()
-        alert('logged out')
-        dispatch(actionLogout())
-        navigate('/form') 
-    }
 
     useEffect(() => {
         const s = io("http://localhost:3001")
@@ -33,7 +21,6 @@ const MainPage = () => {
     return (
         <div>
             <Text socket={socket} />
-            <button onClick={logOut}>Log out</button>
         </div>
     )
 }
