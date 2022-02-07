@@ -7,11 +7,6 @@ import Text from '../components/Text'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { actionLogout } from '../store/auth'
-import api from '../api'
-
-
-// import Quill from 'quill';
-// import { useCallback, useEffect, useState } from "react"
 
 const MainPage = () => {
 
@@ -37,11 +32,7 @@ const MainPage = () => {
     
     return (
         <div>
-            <form>
-                <Text socket={socket} />
- 
-                <input type="submit"  value="Send" />
-            </form>
+            <Text socket={socket} />
             <button onClick={logOut}>Log out</button>
         </div>
     )

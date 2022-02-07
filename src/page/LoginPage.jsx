@@ -22,7 +22,7 @@ const LoginPage = () => {
 
         if (response.data.successfully) {
             alert('Loging successfully')
-            dispatch(actionAuth(response.data.id))
+            dispatch(actionAuth({id:  response.data.id, login: login}))
             navigate('/form')
         }
         else alert('Incorrect login or password')

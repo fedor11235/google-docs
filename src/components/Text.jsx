@@ -1,9 +1,7 @@
 import { useEffect, useState  } from "react"
 import { useSelector } from 'react-redux'
 import '../assets/css/Textarea.css'
-
-
-// import { useState  } from "react"
+import api from '../api'
 
 function randColor() {
     const
@@ -26,6 +24,7 @@ const MainPage = (props) => {
 
     // const otherId = [{id: 1, color: randColor()}, {id: 2, color: randColor()}, {id: 3, color: randColor()}]
     const idPerson = useSelector(state => state.id)
+    const loginPerson = useSelector(state => state.login)
 
 
     //загрузка документа
@@ -70,62 +69,36 @@ const MainPage = (props) => {
         },[text, otherId]
       )
 
+    async function submitPost (evt) {
+        evt.preventDefault()
+        console.log(loginPerson)
+
+        const obgReq = {login: loginPerson, content: text}
+        const response = await api.posts.createPosts(obgReq)
+
+        if (response.data.successfully) {
+            alert('You sent the post')
+        }
+        else alert('The shipment was unsuccessful')
+    }
+
     
     return (
         <div>
             <div className="others">
                 {otherId?.map(elem => (<div className="other-id" key={elem.id} style = { {background: elem.color} } ></div>))}
             </div>
-            <textarea  
-                contentEditable 
-                suppressContentEditableWarning 
-                onInput={evnt => setText(evnt.target.value)}
-            />           
+            <form onSubmit={submitPost}>
+                <textarea  
+                    contentEditable 
+                    suppressContentEditableWarning 
+                    onInput={evnt => setText(evnt.target.value)}
+                />
+                <input type="submit"  value="Send" />
+            </form>           
         </div>
 
     )
 }
 
 export default MainPage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // сохранение от от других клиентов
-    // useEffect(() => {
-    // if (props.socket === null || text === '') return
-
-    // console.log('otherId')
-    // console.log(otherId)
-
-    // const handler = otherId => {
-    //     console.log('otherId')
-    //     console.log(otherId)
-    //     setOtherId(otherId)
-    // }
-    // props.socket.on("receive-changes", handler)
-
-    // return () => {
-    //     props.socket.off("receive-changes", handler)
-    // }
-    // }, [props.socket, text])
-
-
-    //отправить изменения на другие клиенты
-    // useEffect(() => {
-    //     if (props.socket === null || text === '') return
-    //     props.socket.emit("send-changes", documentId)
-
-    //     return () => {   
-    //     }
-    // }, [props.socket, text])
