@@ -3,7 +3,7 @@ import '../assets/css/Textarea.css'
 
 import { useEffect, useState  } from "react"
 import {io} from 'socket.io-client'
-import Text from '../components/Text'
+import TextComponent from '../components/TextComponent'
 
 
 const MainPage = () => {
@@ -20,7 +20,7 @@ const MainPage = () => {
     
     return (
         <div>
-            <Text socket={socket} />
+            <TextComponent socket={socket} />
         </div>
     )
 }

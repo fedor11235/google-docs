@@ -18,8 +18,8 @@ function randColor() {
 
 const INTERVAL_MS = 2000
 
-const MainPage = (props) => {
-    let [text, setText] = useState('')
+const TextComponent = (props) => {
+    let [text, setText] = useState(' ')
     let [otherId, setOtherId] = useState()
 
 
@@ -31,10 +31,9 @@ const MainPage = (props) => {
 
     //загрузка документа
     useEffect(() => {
-        if (props.socket === null || text === '') return
+        if (props.socket === undefined || text === '') return
 
-    
-        props.socket.once('load-document', otherIdRes => {
+        props.socket.on('load-document', otherIdRes => {
             otherIdRes.forEach(elemRes => {
                 otherId?.map(elemMy => {
                     if(elemMy.id === elemRes.id)
@@ -54,7 +53,7 @@ const MainPage = (props) => {
 
     // сохранение документа
     useEffect(() => {
-        if (props.socket === null || text === '') return 
+        if (props.socket === undefined || text === '') return 
         const interval = setInterval(() => {
             props.socket.emit('save-document', text)
         }, INTERVAL_MS)
@@ -84,16 +83,31 @@ const MainPage = (props) => {
         props.socket.emit('delete-document', idPerson)
     }
 
+    function inpytText(evt) {
+        props.socket.emit('send-changes', evt.target.value)
+        props.socket.on('receive-changes', textServe =>{
+            setText(textServe)
+        })
+        console.log(text)
+
+
+
+        // props.socket.emit('delete-document', idPerson)
+    }
+
+
     return (
         <div>
             <div className="others">
-                {otherId?.map(elem => (<div className="other-id" key={elem.id} style = { {background: elem.color} } ></div>))}
+                {otherId?.map((elem, index) => (<div className="other-id" key={index} style = { {background: elem.color} } ></div>))}
             </div>
             <form onSubmit={submitPost}>
                 <textarea  
                     contentEditable 
                     suppressContentEditableWarning 
-                    onInput={evnt => setText(evnt.target.value)}
+                    onChange={inpytText}
+                    // onChange={evnt => {setText(evnt.target.value); console.log(text)}}
+                    value={text}
                 />
                 <input type="submit"  value="Send" />
                 <button onClick={logOut}>Log out</button>
@@ -103,4 +117,4 @@ const MainPage = (props) => {
     )
 }
 
-export default MainPage
+export default TextComponent
