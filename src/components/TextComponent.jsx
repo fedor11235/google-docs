@@ -28,12 +28,11 @@ const TextComponent = (props) => {
     const idPerson = useSelector(state => state.id)
     const loginPerson = useSelector(state => state.login)
 
-
     //загрузка документа
     useEffect(() => {
         if (props.socket === undefined || text === '') return
 
-        props.socket.on('load-document', otherIdRes => {
+        props.socket.once('get-list-id', otherIdRes => {
             otherIdRes.forEach(elemRes => {
                 otherId?.map(elemMy => {
                     if(elemMy.id === elemRes.id)
@@ -42,16 +41,26 @@ const TextComponent = (props) => {
                             return
                         }
                 })
+                console.log(elemRes)
 
                 if(!elemRes.color) {elemRes.color=randColor()}
             })
+
             setOtherId(otherIdRes)
         })
 
-        props.socket.emit('get-document', idPerson)
-        }, [props.socket, text])
+        props.socket.emit('set-document', idPerson)
+        }, [props.socket])
 
-    // сохранение документа
+    //отправляет изменнеие текста на сервер
+    useEffect(() => {
+        if (props.socket === undefined || text === '') return
+        props.socket.on('receive-changes', textServe =>{
+            setText(textServe)
+        })
+    })
+
+    // сохранение текста
     useEffect(() => {
         if (props.socket === undefined || text === '') return 
         const interval = setInterval(() => {
