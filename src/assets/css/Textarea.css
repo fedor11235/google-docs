@@ -1,7 +1,10 @@
-textarea {
-    width: 300px;
+#textarea {
+    padding: 15px;
+    display: flex;
+    width: 270px;
     height: 200px;
-    background-color: #fff;
+    background: #fff;
+    color: black;
 }
 
 .others{

@@ -6,6 +6,8 @@ import { actionLogout } from '../store/auth'
 import '../assets/css/Textarea.css'
 import api from '../api'
 
+const INTERVAL_MS = 2000
+
 function randColor() {
     const
         r = Math.floor(Math.random() * (256)),
@@ -15,12 +17,10 @@ function randColor() {
     return color 
 }
 
-
-const INTERVAL_MS = 2000
-
 const TextComponent = (props) => {
     let [text, setText] = useState(' ')
     let [otherId, setOtherId] = useState()
+    let [cursorPosition, setCursorPosition] = useState(0)
 
 
     const dispatch = useDispatch()
@@ -41,7 +41,6 @@ const TextComponent = (props) => {
                             return
                         }
                 })
-                console.log(elemRes)
 
                 if(!elemRes.color) {elemRes.color=randColor()}
             })
@@ -52,25 +51,33 @@ const TextComponent = (props) => {
         props.socket.emit('set-document', idPerson)
         }, [props.socket])
 
-    //отправляет изменнеие текста на сервер
+    //прием изменение текста с сервера
     useEffect(() => {
         if (props.socket === undefined || text === '') return
+
+        const textarea = document.getElementById('textarea');
+        changesCursorPosition(textarea)
+        
         props.socket.on('receive-changes', textServe =>{
             setText(textServe)
         })
     })
 
-    // сохранение текста
-    useEffect(() => {
-        if (props.socket === undefined || text === '') return 
-        const interval = setInterval(() => {
-            props.socket.emit('save-document', text)
-        }, INTERVAL_MS)
-        return () => {
-            clearInterval(interval)
-          }
+    function changesCursorPosition (target){
+        const selection = document.getSelection()
+        const range = document.createRange()
     
-      }, [props.socket, text])
+        console.log('position cursor: ', cursorPosition)
+    
+        range.selectNodeContents(target)
+        
+        try {range.setStart(target.childNodes[0], cursorPosition)}
+        catch {range.setStart(target.childNodes[0], text.length)}
+        range.collapse(true)
+    
+        selection.removeAllRanges()
+        selection.addRange(range)
+    }    
 
     async function submitPost (evt) {
         evt.preventDefault()
@@ -93,15 +100,12 @@ const TextComponent = (props) => {
     }
 
     function inpytText(evt) {
-        props.socket.emit('send-changes', evt.target.value)
-        props.socket.on('receive-changes', textServe =>{
-            setText(textServe)
-        })
-        console.log(text)
 
+        props.socket.emit('save-document', text)
+        props.socket.emit('send-changes', evt.target.textContent)
 
-
-        // props.socket.emit('delete-document', idPerson)
+        const selection = document.getSelection()
+        setCursorPosition(selection.anchorOffset)
     }
 
 
@@ -111,13 +115,15 @@ const TextComponent = (props) => {
                 {otherId?.map((elem, index) => (<div className="other-id" key={index} style = { {background: elem.color} } ></div>))}
             </div>
             <form onSubmit={submitPost}>
-                <textarea  
-                    contentEditable 
+                <div 
+                    id="textarea"
+                    contentEditable ="true"
                     suppressContentEditableWarning 
-                    onChange={inpytText}
-                    // onChange={evnt => {setText(evnt.target.value); console.log(text)}}
-                    value={text}
-                />
+                    onInput={inpytText}
+                >
+                    {text}
+                    
+                </div>
                 <input type="submit"  value="Send" />
                 <button onClick={logOut}>Log out</button>
             </form>           
