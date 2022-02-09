@@ -6,7 +6,7 @@ import { actionLogout } from '../store/auth'
 import '../assets/css/Textarea.css'
 import api from '../api'
 
-const INTERVAL_MS = 2000
+// const INTERVAL_MS = 2000
 
 function randColor() {
     const
@@ -18,8 +18,11 @@ function randColor() {
 }
 
 const TextComponent = (props) => {
-    let [text, setText] = useState(' ')
+    let [innerHTML, setInnerHTML] = useState()
+    // let [innerHTML, setInnerHTML] = useState('Поп <span class="cursor"></span> понятно ляля какашка ')
+    // let [text, setText] = useState(['Поп', <span className="cursor"></span>, 'понятно ляля какашка'])
     let [otherId, setOtherId] = useState()
+    let [text, setText] = useState()
     let [cursorPosition, setCursorPosition] = useState(0)
 
 
@@ -28,7 +31,7 @@ const TextComponent = (props) => {
     const idPerson = useSelector(state => state.id)
     const loginPerson = useSelector(state => state.login)
 
-    //загрузка документа
+    //получение айди других клиентов
     useEffect(() => {
         if (props.socket === undefined || text === '') return
 
@@ -53,11 +56,11 @@ const TextComponent = (props) => {
 
     //прием изменение текста с сервера
     useEffect(() => {
-        if (props.socket === undefined || text === '') return
-        changesCursorPosition()
+        if (props.socket === undefined || innerHTML === '') return
+        changesCaretPosition()
         
-        props.socket.on('receive-changes', textServe =>{
-            setText(textServe)
+        props.socket.on('receive-changes', innerHTMLServe =>{
+            setInnerHTML(innerHTMLServe)
         })
     })
 
@@ -72,7 +75,7 @@ const TextComponent = (props) => {
         const selection = document.getSelection()
         let cursorLength = 0
 
-        if(selection.anchorNode == elem)
+        if(selection.anchorNode === elem)
         cursorLength = selection.anchorOffset;
         else {
             const nodesFind = selection.anchorNode;
@@ -80,7 +83,7 @@ const TextComponent = (props) => {
                 return undefined;
             else {
                 nodeWalk(elem, function(node) {
-                    if(node == nodesFind)  return false
+                    if(node === nodesFind)  return false
                     if(node.textContent && !node.firstChild)  cursorLength += node.textContent.length    
                 })
                 cursorLength += selection.anchorOffset
@@ -89,22 +92,28 @@ const TextComponent = (props) => {
         return cursorLength
     }
 
-    function changesCursorPosition (){
+    function changesCaretPosition (){
         const textarea = document.getElementById('textarea') //родительский контейнер
 
         const selection = document.getSelection()
         const range = document.createRange()
 
-    
-        console.log('position cursor: ', cursorPosition)
-
- 
-        
-        try {range.setStart(textarea.childNodes[0], cursorPosition)}
-        catch {range.setStart(textarea.childNodes[0], text.length)}
         range.collapse(true)
-    
         selection.removeAllRanges()
+
+        for (let i = 0; i< textarea.childNodes.length; i+=1){
+            
+            if(i===0) 
+                if (textarea.childNodes[i].length >= cursorPosition)  range.setStart(textarea.childNodes[0], cursorPosition )
+
+            
+            if(i%2===0 && i!==0)
+                if (textarea.childNodes[i].length >= cursorPosition) {
+                    const childCursorPosition = cursorPosition-textarea.childNodes[i-2].length
+                    if(childCursorPosition>=0) range.setStart(textarea.childNodes[i], childCursorPosition); 
+                }
+        }
+
         selection.addRange(range)
     }    
 
@@ -129,16 +138,12 @@ const TextComponent = (props) => {
     }
 
     function inpytText(evt) {
+        setText(evt.target.textContent)
+        setCursorPosition(getCaretPosition(evt.target))
 
-        props.socket.emit('save-document', text)
-        props.socket.emit('send-changes', evt.target.textContent)
-
-        const selection = window.getSelection()
-
-        const pop = getCaretPosition(evt.target)
-
-        console.log('cursor: ', pop)
-        setCursorPosition(selection.anchorOffset)
+        
+        props.socket.emit('send-changes', {innerHTML: evt.target.innerHTML, idPerson: idPerson, cursorPosition: cursorPosition})
+        props.socket.emit('save-document', evt.target.textContent)
     }
 
 
@@ -153,10 +158,8 @@ const TextComponent = (props) => {
                     contentEditable ="true"
                     suppressContentEditableWarning 
                     onInput={inpytText}
+                    dangerouslySetInnerHTML={{__html: innerHTML}}
                 >
-                    Привет это<span className="cursor"></span> понятно ляля какашка
-                    {/* {text} */}
-                    
                 </div>
                 <input type="submit"  value="Send" />
                 <button onClick={logOut}>Log out</button>

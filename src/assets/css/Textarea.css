@@ -12,18 +12,24 @@
     width: 1px;
     height: 27px;
     background: blue;
+    width: 1px;
+    height: 27px;
+    cursor:pointer;
 }
-
-  
 
 .cursor::before{
     position: absolute;
+    cursor:pointer;
     left: 0px;
     content: '';
     background: blue;
     width: 1px;
     height: 27px;
 }
+
+.cursor:hover::after { 
+    content: 'Lena'; 
+   }
 
 .others{
     display: flex;
