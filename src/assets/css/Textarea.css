@@ -1,10 +1,28 @@
 #textarea {
     padding: 15px;
-    display: flex;
+    font-size: 20px;
     width: 270px;
     height: 200px;
     background: #fff;
     color: black;
+}
+
+.cursor{
+    position: relative;
+    width: 1px;
+    height: 27px;
+    background: blue;
+}
+
+  
+
+.cursor::before{
+    position: absolute;
+    left: 0px;
+    content: '';
+    background: blue;
+    width: 1px;
+    height: 27px;
 }
 
 .others{

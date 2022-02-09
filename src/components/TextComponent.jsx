@@ -54,25 +54,54 @@ const TextComponent = (props) => {
     //прием изменение текста с сервера
     useEffect(() => {
         if (props.socket === undefined || text === '') return
-
-        const textarea = document.getElementById('textarea');
-        changesCursorPosition(textarea)
+        changesCursorPosition()
         
         props.socket.on('receive-changes', textServe =>{
             setText(textServe)
         })
     })
 
-    function changesCursorPosition (target){
+    function nodeWalk(node, func) {
+        let result = func(node)
+        for(node = node.firstChild; result !== false && node; node = node.nextSibling)
+            result = nodeWalk(node, func)
+        return result
+        }
+
+    function getCaretPosition(elem) {
+        const selection = document.getSelection()
+        let cursorLength = 0
+
+        if(selection.anchorNode == elem)
+        cursorLength = selection.anchorOffset;
+        else {
+            const nodesFind = selection.anchorNode;
+            if(!elem.contains(selection.anchorNode))
+                return undefined;
+            else {
+                nodeWalk(elem, function(node) {
+                    if(node == nodesFind)  return false
+                    if(node.textContent && !node.firstChild)  cursorLength += node.textContent.length    
+                })
+                cursorLength += selection.anchorOffset
+            }
+        }
+        return cursorLength
+    }
+
+    function changesCursorPosition (){
+        const textarea = document.getElementById('textarea') //родительский контейнер
+
         const selection = document.getSelection()
         const range = document.createRange()
+
     
         console.log('position cursor: ', cursorPosition)
-    
-        range.selectNodeContents(target)
+
+ 
         
-        try {range.setStart(target.childNodes[0], cursorPosition)}
-        catch {range.setStart(target.childNodes[0], text.length)}
+        try {range.setStart(textarea.childNodes[0], cursorPosition)}
+        catch {range.setStart(textarea.childNodes[0], text.length)}
         range.collapse(true)
     
         selection.removeAllRanges()
@@ -104,7 +133,11 @@ const TextComponent = (props) => {
         props.socket.emit('save-document', text)
         props.socket.emit('send-changes', evt.target.textContent)
 
-        const selection = document.getSelection()
+        const selection = window.getSelection()
+
+        const pop = getCaretPosition(evt.target)
+
+        console.log('cursor: ', pop)
         setCursorPosition(selection.anchorOffset)
     }
 
@@ -121,7 +154,8 @@ const TextComponent = (props) => {
                     suppressContentEditableWarning 
                     onInput={inpytText}
                 >
-                    {text}
+                    Привет это<span className="cursor"></span> понятно ляля какашка
+                    {/* {text} */}
                     
                 </div>
                 <input type="submit"  value="Send" />
