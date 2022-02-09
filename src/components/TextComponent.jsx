@@ -19,7 +19,6 @@ function randColor() {
 
 const TextComponent = (props) => {
     let [innerHTML, setInnerHTML] = useState()
-    // let [innerHTML, setInnerHTML] = useState('Поп <span class="cursor"></span> понятно ляля какашка ')
     // let [text, setText] = useState(['Поп', <span className="cursor"></span>, 'понятно ляля какашка'])
     let [otherId, setOtherId] = useState()
     let [text, setText] = useState()
@@ -28,7 +27,6 @@ const TextComponent = (props) => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const idPerson = useSelector(state => state.id)
     const loginPerson = useSelector(state => state.login)
 
     //получение айди других клиентов
@@ -51,7 +49,7 @@ const TextComponent = (props) => {
             setOtherId(otherIdRes)
         })
 
-        props.socket.emit('set-document', idPerson)
+        props.socket.emit('set-document', loginPerson)
         }, [props.socket])
 
     //прием изменение текста с сервера
@@ -93,8 +91,7 @@ const TextComponent = (props) => {
     }
 
     function changesCaretPosition (){
-        const textarea = document.getElementById('textarea') //родительский контейнер
-
+        const textarea = document.getElementById('textarea')
         const selection = document.getSelection()
         const range = document.createRange()
 
@@ -134,7 +131,7 @@ const TextComponent = (props) => {
         alert('logged out')
         dispatch(actionLogout())
         navigate('/form') 
-        props.socket.emit('delete-document', idPerson)
+        props.socket.emit('delete-document', loginPerson)
     }
 
     function inpytText(evt) {
@@ -142,13 +139,14 @@ const TextComponent = (props) => {
         setCursorPosition(getCaretPosition(evt.target))
 
         
-        props.socket.emit('send-changes', {innerHTML: evt.target.innerHTML, idPerson: idPerson, cursorPosition: cursorPosition})
+        props.socket.emit('send-changes', {innerHTML: evt.target.innerHTML, cursorPosition: cursorPosition})
         props.socket.emit('save-document', evt.target.textContent)
     }
 
 
     return (
         <div>
+            <h3>Hi! {loginPerson} </h3>
             <div className="others">
                 {otherId?.map((elem, index) => (<div className="other-id" key={index} style = { {background: elem.color} } ></div>))}
             </div>

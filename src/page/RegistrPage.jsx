@@ -22,7 +22,7 @@ const RegistrPage = () => {
 
         if (response.data.successfully) {
             alert('registration successfully')
-            dispatch(actionAuth({id:  response.data.id, login: login}))
+            dispatch(actionAuth({login: login}))
             navigate('/form')
         }
         else alert('The login you entered already exists')

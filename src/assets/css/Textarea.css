@@ -28,7 +28,8 @@
 }
 
 .cursor:hover::after { 
-    content: 'Lena'; 
+    width: 10px;
+    content: attr(id); 
    }
 
 .others{

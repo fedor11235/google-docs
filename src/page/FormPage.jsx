@@ -26,31 +26,3 @@ const MainPage = () => {
 }
 
 export default MainPage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // async function createPosts(evt) {
-    //     evt.preventDefault();
-
-    //     // const obgReq = {login: login, password: password}
-    //     // const response = await api.posts.createPosts(obgReq)
-
-    //     // if (response.data.successfully) {
-    //     //     alert('registration successfully')
-    //     //     dispatch(actionAuth())
-    //     //     navigate('/form')
-    //     // }
-    //     // else alert('The login you entered already exists')
-    // }
