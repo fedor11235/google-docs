@@ -50,7 +50,7 @@ const TextComponent = (props) => {
         })
 
         props.socket.emit('set-document', loginPerson)
-        }, [props.socket])
+        }, [text])
 
     //прием изменение текста с сервера
     useEffect(() => {

@@ -2,13 +2,13 @@ import { render } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from '../store'
-import App from '../App'
+import MainPage from '../page/MainPage'
 
-test('renders component App', () => {
+test('renders component RegistrPage', () => {
   render(
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <MainPage />
       </BrowserRouter>
     </Provider>
     )
