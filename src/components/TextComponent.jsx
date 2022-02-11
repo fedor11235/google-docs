@@ -137,8 +137,7 @@ const TextComponent = (props) => {
     function inpytText(evt) {
         setText(evt.target.textContent)
         setCursorPosition(getCaretPosition(evt.target))
-
-        
+ 
         props.socket.emit('send-changes', {innerHTML: evt.target.innerHTML, cursorPosition: cursorPosition})
         props.socket.emit('save-document', evt.target.textContent)
     }

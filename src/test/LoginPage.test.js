@@ -53,13 +53,21 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from '../store'
 import LoginPage from '../page/LoginPage'
+import { act } from 'react-dom/test-utils'
+import { authReduser, actionAuth } from '../store/auth'
 
 test('renders component LoginPage', () => {
-  render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <LoginPage />
-      </BrowserRouter>
-    </Provider>
-    )
+
+    act(() => {
+        render(
+            <Provider store={store}>
+              <BrowserRouter>
+                <LoginPage />
+              </BrowserRouter>
+            </Provider>
+        )
+    })
+
+    const h1 = document.querySelector('h1')
+    expect(h1.innerHTML).toBe("Log in")
 })
